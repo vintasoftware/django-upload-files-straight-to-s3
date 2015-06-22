@@ -1,0 +1,4 @@
+Django==1.8.2
+django-storages-redux==1.2.3
+python-decouple==2.3
+wheel==0.24.0

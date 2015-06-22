@@ -1,0 +1,10 @@
+*.pyc
+.DS_Store
+.sass-cache
+.env
+/db.sqlite3
+/venv
+/staticfiles/
+/media/
+/node_modules/
+/components/
