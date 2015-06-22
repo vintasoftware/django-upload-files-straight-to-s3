@@ -127,7 +127,7 @@ BOWER_INSTALLED_APPS = (
     'jquery#2.1.4',
 )
 
-if DEBUG:
+if not DEBUG:
     ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 

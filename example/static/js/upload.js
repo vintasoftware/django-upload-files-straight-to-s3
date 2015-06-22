@@ -3,7 +3,23 @@ function registerUploadForm(form) {
   var doc_file = form.find("input[name='doc_file']");
 
   doc_file.change(function (evt){
-    file = evt.target.files[0];
+    // Selecting what we need from the UI
+    var status = $('.status');
+    var parent_form = $(evt.target.form);
+    var input_file = $(evt.target);
+    var submit_btn = parent_form.find('input[type="submit"]');
+    var file_name = parent_form.find("input[name='file_name']");
+
+    if (evt.target.files.length === 0) {
+      // deselecting a file
+      status.text('Waiting for file.');
+      input_file.val('');
+      file_name.val('');
+      return;
+    }
+
+    var file = evt.target.files[0];
+
     var filename = file.name;
 
     // first we need to get signature for authorization
@@ -19,11 +35,6 @@ function registerUploadForm(form) {
       }
       fd.append('file', evt.target.files[0]);
 
-      // Selecting what we need from the UI
-      var status = $('.status');
-      var parent_form = $(evt.target.form);
-      var input_file = $(evt.target);
-      var submit_btn = parent_form.find('input[type="submit"]');
 
 
       // feedback that we are uploading the file
@@ -37,7 +48,6 @@ function registerUploadForm(form) {
              contentType: false,
              success: function(){
                status.html('File uploaded, press submit to save.');
-               var file_name = parent_form.find("input[name='file_name']");
                // set the hidden field to the uploaded file's path
                file_name.val(data.file_path);
              },

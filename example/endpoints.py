@@ -3,9 +3,9 @@
 import uuid
 
 from django.conf import settings
+from django.http import JsonResponse
+from django.views.generic import View
 
-from rest_framework import views
-from rest_framework.response import Response
 from boto.s3.connection import S3Connection
 
 
@@ -26,10 +26,10 @@ def get_form_args_to_s3(key):
         http_method='https' if is_secure else 'http')
 
 
-class S3AuthAPIView(views.APIView):
+class S3AuthAPIView(View):
 
     def get(self, request, *args, **kwargs):
-        file_name = request.QUERY_PARAMS['file_name']
+        file_name = request.GET['file_name']
         file_path = 'documents/{}/{}'.format(uuid.uuid4(), file_name)
         key = '/'.join(['media', file_path])
         form_args = get_form_args_to_s3(key)
@@ -38,4 +38,4 @@ class S3AuthAPIView(views.APIView):
         fields['form_args']['fields'] = {
             x['name']: x['value'] for x in form_args['fields']}
         fields['file_path'] = file_path
-        return Response(fields)
+        return JsonResponse(fields)
