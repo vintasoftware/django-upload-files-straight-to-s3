@@ -28,10 +28,13 @@ def get_form_args_to_s3(key):
 
 class S3AuthAPIView(View):
 
-    def get(self, request, *args, **kwargs):
-        file_name = request.GET['file_name']
+    def get_s3_key_and_file_path(self, file_name):
+        file_name = file_name
         file_path = 'documents/{}/{}'.format(uuid.uuid4(), file_name)
-        key = '/'.join(['media', file_path])
+        return '/'.join(['media', file_path]), file_path
+
+    def get(self, request, *args, **kwargs):
+        key, file_path = self.get_s3_key_and_file_path(request.GET['file_name'])
         form_args = get_form_args_to_s3(key)
         fields = {'form_args': {}}
         fields['form_args']['action'] = form_args['action']

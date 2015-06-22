@@ -9,7 +9,9 @@ from example.models import Document
 
 
 class DocumentForm(forms.ModelForm):
-    file_name = forms.CharField(widget=forms.HiddenInput, required=False)
+    # since we are not going to send the file via POST we need a field to save
+    # the already uploaded path of the uploaded file.
+    file_name = forms.CharField(required=False)
 
     class Meta:
         model = Document
@@ -23,6 +25,7 @@ class DocumentForm(forms.ModelForm):
         super(DocumentForm, self).__init__(*args, **kwargs)
         # doc_file is not required if file_name is set
         self.fields['doc_file'].required = False
+        self.fields['file_name'].widget.attrs['readonly'] = True
 
     def clean(self):
         file_name = self.cleaned_data.get('file_name')
@@ -33,7 +36,7 @@ class DocumentForm(forms.ModelForm):
                 'doc_file',
                 ValidationError(self.fields['doc_file']
                                 .error_messages['required'], code='required'))
-        # if filename is set with the path of the file it was uploaded by
+        # if file_name is set with the path of the file it was uploaded by
         # the frontend
         elif not doc_file and file_name:
             self.cleaned_data['doc_file'] = file_name

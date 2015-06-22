@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.generic.base import RedirectView
+from django.core.urlresolvers import reverse_lazy
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^example/', include('example.urls', namespace='example')),
+    url(r'^$',  RedirectView.as_view(
+        url=reverse_lazy('example:document-upload')), name='document-upload'),
 ]

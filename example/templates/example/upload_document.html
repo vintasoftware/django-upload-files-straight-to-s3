@@ -7,13 +7,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Django SASS, Bower, Compressor example</title>
+    <title>Uploading from browser to S3 example</title>
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
     <script type="text/javascript" src="{% static 'jquery/dist/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/upload.js' %}"></script>
 
-    {% if not DEBUG %}
+    {% if USE_S3 %}
     <script>
       $( document ).ready(function() {
         registerUploadForm($('.s3upload-form'));

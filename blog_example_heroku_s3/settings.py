@@ -71,7 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'example.context_processors.debug',
+                'example.context_processors.use_s3',
             ],
         },
     },
@@ -127,21 +127,27 @@ BOWER_INSTALLED_APPS = (
     'jquery#2.1.4',
 )
 
-if not DEBUG:
-    ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# set this to True if you would like to test upload
+# to S3 on localhost via frontend
+S3_DEBUG = False
 
+if S3_DEBUG or not DEBUG:
+    USE_S3 = True
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = '{0}.s3.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME)
 
-    STATICFILES_STORAGE = 'example.custom_storages.StaticCachedS3BotoStorage'
     DEFAULT_FILE_STORAGE = 'example.custom_storages.MediaS3BotoStorage'
 
-    COMPRESS_STORAGE = STATICFILES_STORAGE
+    MEDIA_URL = 'https://{0}/media/'.format(AWS_S3_CUSTOM_DOMAIN)
+else:
+    USE_S3 = False
+
+if not DEBUG:
+    ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    STATICFILES_STORAGE = 'example.custom_storages.StaticCachedS3BotoStorage'
 
     STATIC_URL = 'https://{0}/static/'.format(AWS_S3_CUSTOM_DOMAIN)
-    MEDIA_URL = 'https://{0}/media/'.format(AWS_S3_CUSTOM_DOMAIN)
-
-    COMPRESS_URL = STATIC_URL
