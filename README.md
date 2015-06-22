@@ -8,7 +8,7 @@ This is the example project for the post in (here)[TODO].
 
 `python manage.py bower install`
 
-if you would like to test it on localhost set `S3_DEBUG` to `True` on `settings.py` and create a file called `.env` with the following content:
+if you would like to test it on localhost set `S3_DEBUG` to `True` in your `settings.py` and create a file called `.env` with the following content:
 ```bash
 AWS_ACCESS_KEY_ID=''
 AWS_SECRET_ACCESS_KEY=''
