@@ -39,11 +39,12 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djangobower',  # add this
 
-    'storages',  # add this
+    'storages',
+    'crispy_forms',
 
     'example',
-
 )
 
 MIDDLEWARE_CLASSES = (
@@ -70,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'example.context_processors.debug',
             ],
         },
     },
@@ -109,7 +111,23 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-if not DEBUG:
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+
+    'djangobower.finders.BowerFinder',
+)
+
+BOWER_INSTALLED_APPS = (
+    'bootstrap#3.3.5',
+    'jquery#2.1.4',
+)
+
+if DEBUG:
     ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -118,8 +136,8 @@ if not DEBUG:
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = '{0}.s3.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME)
 
-    STATICFILES_STORAGE = 'sample_app.custom_storages.StaticCachedS3BotoStorage'
-    DEFAULT_FILE_STORAGE = 'sample_app.custom_storages.MediaS3BotoStorage'
+    STATICFILES_STORAGE = 'example.custom_storages.StaticCachedS3BotoStorage'
+    DEFAULT_FILE_STORAGE = 'example.custom_storages.MediaS3BotoStorage'
 
     COMPRESS_STORAGE = STATICFILES_STORAGE
 

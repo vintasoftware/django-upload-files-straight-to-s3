@@ -1,0 +1,51 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Django SASS, Bower, Compressor example</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+    <script type="text/javascript" src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/upload.js' %}"></script>
+
+    {% if not DEBUG %}
+    <script>
+      $( document ).ready(function() {
+        registerUploadForm($('.s3upload-form'));
+      });
+    </script>
+    {% endif %}
+
+  </head>
+  <body>
+    <div class="container">
+      <h1>Upload Document</h1>
+      {% crispy form %}
+      <div>
+        Status: <b class='status'>Waiting for file.</b>
+      </div>
+      <h1>Documents</h1>
+      {% if documents %}
+      <table class="table">
+        <tr>
+          <th>Name</th>
+          <th>File</th>   
+        </tr>
+        {% for document in documents %}
+        <tr>
+          <td>{{ document.name }}</td>
+          <td><a href="{{ document.doc_file.url }}">{{ document.doc_file }}</a></td>    
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+      <p>No Documents</p>
+      {% endif %}
+    </div>
+  </body>
+</html>
