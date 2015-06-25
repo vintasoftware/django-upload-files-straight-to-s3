@@ -1,6 +1,6 @@
 # Uploading files to S3 from the browser
 
-This is the example project for the post in [here](TODO)
+This is the example project for the post in [here](http://www.vinta.com.br/blog/2015/uploading-files-from-the-frontend-to-S3.html)
 
 `pip install -r requirements.txt`
 
@@ -14,4 +14,4 @@ AWS_ACCESS_KEY_ID=''
 AWS_SECRET_ACCESS_KEY=''
 AWS_STORAGE_BUCKET_NAME=''
 ```
-Make sure your bucket's CORS is set like the example on our blog post [here](TODO).
+Make sure your bucket's CORS is set like the example on our blog post [here](http://www.vinta.com.br/blog/2015/uploading-files-from-the-frontend-to-S3.html).
